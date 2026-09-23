@@ -1,0 +1,10 @@
+{
+  "items": [
+    { "id": "mini-fan", "name": "미니 손선풍기", "description": "", "totalQty": 4 },
+    { "id": "bungeoppang-heatpack", "name": "붕어빵 핫팩", "description": "", "totalQty": 30 },
+    { "id": "blanket", "name": "담요", "description": "", "totalQty": 5 },
+    { "id": "bookstand", "name": "독서대", "description": "", "totalQty": 3 }
+  ],
+  "roster": [],
+  "rentals": []
+}
