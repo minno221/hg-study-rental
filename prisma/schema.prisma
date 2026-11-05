@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 학생 명단 (엑셀로 올린 학번/이름)
+model Student {
+  id        String   @id @default(cuid())
+  studentNo String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  rentals   Rental[]
+}
+
+// 대여해 주는 물품
+model Item {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  quantity    Int      @default(1)
+  createdAt   DateTime @default(now())
+  rentals     Rental[]
+}
+
+// 대여 신청/기록
+model Rental {
+  id        String   @id @default(cuid())
+  studentId String
+  itemId    String
+  // pending(승인 대기) | approved(대여 중) | rejected(거절) | returned(반납)
+  status    String   @default("pending")
+  // 같은 학생이 같은 물품을 동시에 2개 못 빌리게 데이터베이스에서 막는 열쇠.
+  // 대기/대여 중일 때만 값이 있고, 거절/반납되면 비워져요.
+  activeKey String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
